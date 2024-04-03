@@ -1,0 +1,60 @@
+@import "../../../assets/styles/defalutMixins.scss";
+
+.cart-items {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    margin-bottom: 3rem;
+    padding: 3rem;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 0px 5px 0px, rgba(0, 0, 0, 0.1) 0px 0px 1px 0px;
+    position: relative;
+    .close-icon {
+        position: absolute;
+        top: 1rem;
+        right: 2rem;
+        cursor: pointer;
+    }
+
+    .img {
+        height: 200px;
+        width: 300px;
+
+        img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .details {
+        &__name {
+            @include fontS20B600;
+        }
+
+        &__price {
+            .rupee::before {
+                content: "\20B9";
+                font-size: 18px;
+                padding-right: 0.1rem;
+                font-weight: 800;
+            }
+
+            @include fontS16B700;
+            margin: 1rem 0;
+        }
+
+        &__quantity {
+            margin-top: 2rem;
+            display: flex;
+            align-items: center;
+
+            .btn {
+                @include btn-basic;
+            }
+
+            .disable {
+                @include btn-basic;
+                background-color: rgb(227, 228, 230);
+            }
+        }
+    }
+}

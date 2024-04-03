@@ -1,0 +1,26 @@
+@import "../../../assets/styles/defalutMixins.scss";
+
+
+
+.cart-page {
+    padding-bottom: 3rem;
+    .cart-contents {
+        margin: 10rem 5rem 2rem 5rem;
+
+        .buy-container{
+            display: flex;
+            align-items: end;
+            flex-direction: column;
+            .buy-btn {
+                @include btn(#1748D0);
+            }
+        }
+    }
+    .no-cart-contents{
+        margin: 10rem 5rem 2rem 5rem;
+        text-align: center;
+    }
+    .buy-popup-parent {
+        @include popup-parent;
+    }
+}

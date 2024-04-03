@@ -1,0 +1,227 @@
+@import "../../styles/defalutMixins.scss";
+
+@mixin img {
+    object-fit: contain;
+    @include max-ht-wt;
+    border-radius: 10px;
+}
+
+
+
+.single-product {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 0rem 3rem;
+    height: 100%;
+
+    .d-1 {
+        padding: 2rem 0;
+        width: 100%;
+        @include justifyCenter;
+
+        .d-11 {
+            position: fixed;
+
+            .image-lists {
+                gap: 1rem;
+                width: 100%;
+
+                .scrollmenu {
+                    max-width: 470px;
+                    overflow-x: scroll;
+                    white-space: nowrap;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+                }
+
+                .product-img {
+                    display: inline-block;
+                    height: 80px;
+                    width: 100px;
+                    cursor: pointer;
+                    margin: 0 1rem;
+
+                    img {
+                        @include img;
+                        height: 100%;
+                        width: 100%;
+                        object-fit: cover;
+                    }
+
+                }
+
+                .active {
+                    border: 2px solid purple;
+                    border-radius: 10px;
+                }
+            }
+        }
+
+        .d-12 {
+            position: fixed;
+            margin-top: 7rem;
+
+            .p-img {
+                img {
+                    @include img;
+                }
+
+                @media only screen and (max-width:1480px) {
+                    height: 450px;
+                }
+            }
+        }
+    }
+
+    .d-2 {
+        width: 100%;
+
+        .btn {
+            padding-top: 2rem;
+            position: fixed;
+            z-index: 2;
+            width: 45%;
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: space-between;
+
+            .cart-btn {
+                @include btn(#FF9F00);
+            }
+
+            .buy-btn {
+                @include btn(#FB641B);
+            }
+
+        }
+
+        .details {
+            margin-top: 7rem;
+
+            .brand {
+                font-size: 24px;
+                font-weight: 700;
+                color: rgb(13, 76, 115);
+                padding-bottom: 0.5rem;
+            }
+
+            .title {
+                font-size: 18px;
+                font-weight: 700;
+                padding: 0.5rem 0 0.5rem;
+            }
+
+            .ratings {
+                display: flex;
+                gap: 3rem;
+                padding-bottom: 0.5rem;
+
+                &__count {
+                    @include displayflex;
+                }
+
+                &__length {
+                    color: rgb(13, 76, 115);
+                    font-size: 14px;
+                }
+            }
+
+            .discount-price {
+                padding-top: 0.5rem;
+                font-size: 24px;
+                padding-bottom: 1rem;
+                font-weight: 500;
+
+                .discount {
+                    color: green;
+                    padding-right: 1rem;
+                }
+
+                .rupee::before {
+                    content: "\20B9";
+                    font-size: 18px;
+                    padding-right: 0.1rem;
+                    font-weight: 800;
+                }
+            }
+
+            .normalPrice {
+                padding-bottom: 1rem;
+                font-size: 14px;
+                color: rgb(59, 58, 58);
+                font-weight: 700;
+
+                .strike {
+                    text-decoration: line-through;
+                    padding-left: 1rem;
+                }
+            }
+
+            .colour {
+                padding-bottom: 1.5rem;
+                font-weight: 500;
+
+                .colour-box {
+                    padding: 1px 10px;
+                    margin: 0 0.5rem;
+                    border: 1px solid rgb(164, 163, 163);
+                    border-radius: 5px;
+                }
+            }
+
+            .size {
+                padding-bottom: 1rem;
+                font-weight: 500;
+
+                .size-box {
+                    border: 2px solid black;
+                    border-radius: 5px;
+                    padding: 1px 5px;
+                    margin-left: 0.5rem;
+                }
+            }
+
+            .size-chart {
+                font-size: 16px;
+                color: #0c3c9b;
+                font-weight: 700;
+                cursor: pointer;
+                padding-bottom: 0.2rem;
+            }
+
+            .details-wrapper {
+                padding: 0.8rem 0;
+
+                .short-details {
+                    display: flex;
+                    padding-bottom: 0.5rem;
+
+                    &__head {
+                        width: 200px;
+                        font-size: 15px;
+                        font-weight: 700;
+                    }
+
+                    &__value {
+                        width: 200px;
+                        font-size: 15px;
+                        font-weight: 500;
+                    }
+                }
+            }
+
+            .description {}
+        }
+    }
+
+    .size-popup-parent {
+        @include popup-parent;
+    }
+    .buy-popup-parent {
+        @include popup-parent;
+    }
+
+}

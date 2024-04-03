@@ -1,0 +1,50 @@
+@import "../../../styles/defalutMixins.scss";
+
+.size-popup {
+    @include popup(50%, 40%);
+    overflow-x: hidden;
+    padding: 20px;
+
+    .cart-popup {
+        text-align: center;
+
+        .head {
+            margin-top: 2rem;
+        }
+
+        .ok-btn {
+            @include btn(#6aba35);
+            margin-top: 2rem;
+        }
+    }
+
+    .head {
+        font-size: 18px;
+        font-weight: 800;
+        text-align: center;
+        padding: 1.2rem 0 0.5rem;
+        width: 100%;
+        color: #0c3c9b;
+    }
+.pay-popup{
+    text-align: center;
+
+    .pay-btn {
+        @include btn(#3594ba);
+        margin-top: 2rem;
+    }
+}
+
+    .payment-popup {
+        text-align: center;
+
+        .head {
+            margin-top: 2rem;
+        }
+
+        .ok-btn {
+            @include btn(#6aba35);
+            margin-top: 2rem;
+        }
+    }
+}
