@@ -10,6 +10,7 @@ import { faBars, faMagnifyingGlass, faRightFromBracket, } from '@fortawesome/fre
 export const Sidebar = ({ sidePopup, setSidePopup }) => {
     const Products = "Products"
     const Orders = "Orders"
+    const Customer = "Customer"
 
     const navigate = useNavigate();
     const location = useLocation();
@@ -32,6 +33,7 @@ export const Sidebar = ({ sidePopup, setSidePopup }) => {
     useEffect(() => {
         if (pathname === '/products') setSideMenuSelected(Products)
         if (pathname === '/orders') setSideMenuSelected(Orders)
+        if (pathname === '/customer') setSideMenuSelected(Customer)
     }, [pathname])
 
 
@@ -47,6 +49,8 @@ export const Sidebar = ({ sidePopup, setSidePopup }) => {
                     <div className={`content ${sideMenuSelected === Products && "active"}`} onClick={() => { handleRedirect(Products) }}>Products
                     </div>
                     <div className={`content ${sideMenuSelected === Orders && "active"}`} onClick={() => { handleRedirect(Orders) }}>Orders
+                    </div>
+                    <div className={`content ${sideMenuSelected === Customer && "active"}`} onClick={() => { handleRedirect(Customer) }}>Customer
                     </div>
                    
                 </div>

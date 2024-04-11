@@ -1,7 +1,7 @@
 import React from 'react'
 import { faHeart, faUser } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faCookieBite, faMortarPestle, faShoppingCart,faWineGlass, faArrowUpWideShort, faCircleInfo } from '@fortawesome/free-solid-svg-icons'
+import { faCookieBite, faMortarPestle, faShoppingCart, faWineGlass, faArrowUpWideShort, faCircleInfo, faUsers } from '@fortawesome/free-solid-svg-icons'
 import "./_navbarPopup.scss"
 import { useNavigate } from 'react-router-dom'
 export const NavbarPopup = ({ setNavPopup, type }) => {
@@ -20,7 +20,7 @@ export const NavbarPopup = ({ setNavPopup, type }) => {
             navigate("/meals")
             setNavPopup(false)
         }
-       
+
         if (menu === "Products") {
             navigate("/products")
             setNavPopup(false)
@@ -32,12 +32,16 @@ export const NavbarPopup = ({ setNavPopup, type }) => {
         if (menu === "Cart") {
             navigate("/cart")
             setNavPopup(false)
+        } if (menu === "Customer") {
+            navigate("/customer")
+            setNavPopup(false)
         }
+
     }
     return (
         <div className='popup-navbar'>
             <div className='menu-icons-container'
-            style={{marginTop:type === "User" ?"6rem":"0"}}>
+                style={{ marginTop: type === "User" ? "6rem" : "0" }}>
 
                 <div className='menu'>
                     {
@@ -66,6 +70,9 @@ export const NavbarPopup = ({ setNavPopup, type }) => {
                                 <p className='content' onClick={() => { handleRedirect("Orders") }}>
                                     <FontAwesomeIcon icon={faArrowUpWideShort} className='icon-style' />
                                     Orders</p>
+                                <p className='content' onClick={() => { handleRedirect("Customer") }}>
+                                    <FontAwesomeIcon icon={faUsers} className='icon-style' />
+                                    Customer</p>
                             </>
                     }
                 </div>

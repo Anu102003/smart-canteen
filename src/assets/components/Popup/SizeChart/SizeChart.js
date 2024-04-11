@@ -51,7 +51,6 @@ export const SizeChart = ({ data, setChart, cart, totalPrice }) => {
         return () => window.removeEventListener("click", handle)
     }, [])
     const orderDetails={
-        orderId:4,
         userEmailId:email.email,
         orderProductEntityList:data,
         paymentId:paymentId,

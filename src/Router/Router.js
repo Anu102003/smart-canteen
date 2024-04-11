@@ -11,13 +11,13 @@ import { SingleProduct } from '../assets/components/SingleProduct/SingleProduct'
 import { Cart } from '../pages/User/Cart/Cart'
 import { useSelector } from 'react-redux'
 import { SingleOrders } from '../pages/User/Orders/SingleOrders'
+import { Customer } from '../pages/Admin/Customer/Customer'
 
 export const Router = () => {
     const { email, authenticated } = useSelector(state => state.user);
     const [admin, setAdmin] = useState(false);
     useEffect(() => {
-        // if (email.email === "e20itr007@egspec.org") {
-        if (email.email === "a@gmail.com") {
+        if (email.email === "e20itr007@egspec.org") {
             setAdmin(true);
         } else {
             setAdmin(false);
@@ -44,6 +44,7 @@ export const Router = () => {
                         <Route index element={(authenticated && admin) ? <Products /> : <Navigate to="/signin" />} />
                         <Route path="/products" element={(authenticated && admin) ? <Products /> : <Navigate to="/signin" />} />
                         <Route path="/orders" element={(authenticated && admin) ? <Orders /> : <Navigate to="/signin" />} />
+                        <Route path="/customer" element={(authenticated && admin) ? <Customer /> : <Navigate to="/signin" />} />
                     </Route>
                     <Route path="*" element={<PageNotFound />} />
                 </Routes>

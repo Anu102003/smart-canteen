@@ -1,15 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import "./_addProduct.scss"
-import { db } from "../../../../Config/ConfigFirebase"
-import { addDoc, collection, doc, setDoc } from 'firebase/firestore';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleDown, faPlusCircle, faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
 import { InputAddProduct } from '../../Buttons/InputAddProduct/InputAddProduct';
-import { isEditable } from '@testing-library/user-event/dist/utils';
 import { addProductsApi, updateProductsApi } from '../../../../actions/ApiCalls';
 export const AddProduct = ({ category, editId, setAddEnable, editEnable, productData, setEditEnable, setProductData }) => {
     const initialState = {
-        productId: '',
+        // productId: '',
         productName: '',
         productPrice: 0,
         thumbnailImage: '',
@@ -36,7 +31,8 @@ export const AddProduct = ({ category, editId, setAddEnable, editEnable, product
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
 
-    const validation = (formData?.productId !== '' &&
+    const validation = (
+        // formData?.productId !== '' &&
         formData?.productName !== '' &&
         formData?.productPrice !== 0 &&
         formData?.thumbnailImage !== '')
@@ -68,13 +64,13 @@ export const AddProduct = ({ category, editId, setAddEnable, editEnable, product
         }
     }
     const commonInput = [
-        {
-            type: "text",
-            name: "productId",
-            placeholder: "Product Id",
-            value: formData.productId,
-            handleChange: handleChange
-        },
+        // {
+        //     type: "text",
+        //     name: "productId",
+        //     placeholder: "Product Id",
+        //     value: formData.productId,
+        //     handleChange: handleChange
+        // },
         {
             type: "text",
             name: "productName",

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import "./profilePopup.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faClose } from '@fortawesome/free-solid-svg-icons'
+import { faCircleUser, faClose } from '@fortawesome/free-solid-svg-icons'
 import { profileApi } from '../../../actions/ApiCalls'
 import { useSelector } from 'react-redux';
 
@@ -25,10 +25,13 @@ export const ProfilePopup = ({ setProfilePopup }) => {
             <div className='close-icon' onClick={() => { console.log("ttt", false); setProfilePopup(false) }}>
                 <FontAwesomeIcon icon={faClose} size='2xl' />
             </div>
-            <div>
-                <h2>Profile</h2>
-                <h3>Name : </h3>
-                <h3>Email : </h3>
+            <div className='details-container'>
+                <h2> <FontAwesomeIcon icon={faCircleUser} size='2x'/>
+                Profile</h2>
+                <h3 className='details-head'>Name : <span className='details'>{details?.userName}</span></h3>
+                <h3 className='details-head'>Email : <span className='details'>{details?.userEmailId}</span></h3>
+                <h3 className='details-head'>Phone number : <span className='details'>{details?.userPhoneNumber}</span></h3>
+                <h3 className='details-head'>Date Of Birth : <span className='details'>{details?.dateOfBirth.split("-").reverse().join("-")}</span></h3>
             </div>
         </div>
     )

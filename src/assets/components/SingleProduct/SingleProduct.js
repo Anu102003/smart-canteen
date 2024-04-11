@@ -21,10 +21,11 @@ export const SingleProduct = () => {
         setOpenSizeChart(true)
     }
     useEffect(() => {
-        if (product.length > 0) {
+        if (product > 0) {
             const fetchData = async () => {
                 try {
                     const result = await getSingleProductApi(product)
+                    console.log(result)
                     setDetails(result);
                 } catch (error) {
                     console.error("Error fetching single product:", error);

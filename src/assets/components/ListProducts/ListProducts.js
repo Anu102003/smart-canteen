@@ -18,6 +18,7 @@ export const ListProducts = ({ category, details, setEditId, setEditEnable, setP
             window.alert(result.data+". Click ok to continue")
         }
     }
+    console.log(details)
     return (
         <div className='list-container-wrapper'>
             <div className='list-container-item head'>

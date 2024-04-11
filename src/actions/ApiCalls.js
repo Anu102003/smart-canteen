@@ -149,3 +149,14 @@ export const profileApi = (email) => {
             throw error; 
         });
 };
+
+export const getAllCustomerApi = () => {
+    return baseApi.get(`/get`)
+        .then(response => {
+            return response.data;
+        })
+        .catch(error => {
+            console.log('Failed to get customer details', error);
+            throw error; 
+        });
+};

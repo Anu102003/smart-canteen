@@ -22,8 +22,10 @@
 
         .d-11 {
             position: fixed;
-
             .image-lists {
+                width: 500px;
+                display: flex;
+                justify-content: center;
                 gap: 1rem;
                 width: 100%;
 
