@@ -28,7 +28,7 @@ function Input({ value, title, name, color, checkbox, handleFilterChange, filter
                             value={value}
                             type={checkbox ? "checkbox" : "radio"}
                             name={name}
-                            checked={checkbox ? isCheckboxActive : filters[filterType.toLowerCase()] === value}
+                            checked={checkbox ? isCheckboxActive : filters?.productPrice === value}
                             onChange={handleChange}
                         />
                         <span className={checkbox ? "checkmarkk" : "checkmark"}>
@@ -40,8 +40,7 @@ function Input({ value, title, name, color, checkbox, handleFilterChange, filter
                             className={`filter-options ${isActive && 'option-active'} ${filterType === "Color" && "color-options"}`}
                             style={{ background: filterType === "Color" && color }}
                             onClick={() => { setIsActive(!isActive); handleFilterChange(filterType, value) }}>
-                            {filterType !== "Color" &&
-                                <p>{title}</p>}
+                                <p>{title}</p>
                             <span className={(filterType === "Color" && isActive) && 'color-options-active'}
                                 style={{ background: color === "White" ? "black" : "white" }}></span>
                         </div>

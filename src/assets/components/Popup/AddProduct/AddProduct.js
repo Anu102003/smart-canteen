@@ -6,16 +6,20 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleDown, faPlusCircle, faVolumeHigh } from '@fortawesome/free-solid-svg-icons';
 import { InputAddProduct } from '../../Buttons/InputAddProduct/InputAddProduct';
 import { isEditable } from '@testing-library/user-event/dist/utils';
+import { addProductsApi, updateProductsApi } from '../../../../actions/ApiCalls';
 export const AddProduct = ({ category, editId, setAddEnable, editEnable, productData, setEditEnable, setProductData }) => {
-    const initialState={
+    const initialState = {
         productId: '',
-        name:'',
-        price:0,
-        thumbnail: '',
-        images: [{ url: '' }],
+        productName: '',
+        productPrice: 0,
+        thumbnailImage: '',
+        foodType: category,
+        firstImageLink: "",
+        secondImageLink: "",
+        thirdImageLink: "",
     }
     const [formData, setFormData] = useState(initialState)
-   
+
 
     // useEffect(() => {
     //     setFormData(initialState(category));
@@ -32,44 +36,25 @@ export const AddProduct = ({ category, editId, setAddEnable, editEnable, product
         setFormData(prevState => ({ ...prevState, [name]: value }));
     };
 
-    const handleImageChange = (index, e) => {
-        const { value } = e.target;
-        const updateImage = [...formData.images]
-        updateImage[index] = {
-            url: value
-        }
-        setFormData({
-            ...formData,
-            images: updateImage
-        })
-    };
-
-    const handleAddImage = (e) => {
-        e.preventDefault();
-        setFormData(prevState => ({
-            ...prevState,
-            images: [...prevState.images, { url: '' }]
-        }));
-    };
-
     const validation = (formData?.productId !== '' &&
-        formData?.name !== '' &&
-        formData?.price!== 0 &&
-        formData?.thumbnail !== '')
+        formData?.productName !== '' &&
+        formData?.productPrice !== 0 &&
+        formData?.thumbnailImage !== '')
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (validation) {
             try {
-                const postsCollectionRef = collection(db, `${category.toLowerCase()}`);
-                const docRef = editEnable ? doc(db, `${category.toLowerCase()}`, editId) : await addDoc(postsCollectionRef, formData);
-                await setDoc(docRef, formData);
                 if (editEnable) {
-                    window.alert("Edited successfully")
+                    const result=await updateProductsApi(editId,formData)
+                    // console.log(result)
+                    window.alert(result.data)
                     setEditEnable(false)
                     setProductData([])
                 } else {
-                    window.alert("Added successfully")
+                    const result=await addProductsApi(formData)
+                    // console.log(result)
+                    window.alert(result.data)
                     setAddEnable(false)
                 }
                 setFormData(initialState);
@@ -92,57 +77,62 @@ export const AddProduct = ({ category, editId, setAddEnable, editEnable, product
         },
         {
             type: "text",
-            name: "name",
+            name: "productName",
             placeholder: "Name",
-            value: formData.name,
+            value: formData.productName,
             handleChange: handleChange
         },
         {
             type: "text",
-            name: "thumbnail",
+            name: "thumbnailImage",
             placeholder: "Thumbnail Image",
-            value: formData.thumbnail,
+            value: formData.thumbnailImage,
             handleChange: handleChange
         },
         {
             type: "number",
-            name: "price",
+            name: "productPrice",
             placeholder: "Price",
-            value: formData.price,
+            value: formData.productPrice,
+            handleChange: handleChange
+        },
+        {
+            type: "string",
+            name: "firstImageLink",
+            placeholder: "First Image Link",
+            value: formData.firstImageLink,
+            handleChange: handleChange
+        },
+        {
+            type: "string",
+            name: "secondImageLink",
+            placeholder: "Second Image Link",
+            value: formData.secondImageLink,
+            handleChange: handleChange
+        },
+        {
+            type: "string",
+            name: "thirdImageLink",
+            placeholder: "Third Image Link",
+            value: formData.thirdImageLink,
             handleChange: handleChange
         },
 
     ]
-  
-console.log(formData)
+
+    console.log(formData)
     return (
         <div className='add'>
             <p className='add__title'>{category}</p>
             <form className="form" >
 
-            {
+                {
                     commonInput.map((input, index) => (
                         <InputAddProduct key={index} type={input.type} name={input.name} placeholder={input.placeholder} value={input.value} handleChange={input.handleChange} />
                     ))
                 }
-                <div className='form__fields'>
-                    <p>Images </p>:
-                    <div className='image-field-wrapper'>
-                        {formData.images.map((image, index) => (
-                            <div className='image-field' key={index}>
-                                <input
-                                    type="text"
-                                    placeholder="Image URL"
-                                    value={image.url}
-                                    onChange={(e) => handleImageChange(index, e)}
-                                />
-                            </div>
-                        ))}
-                        <button className='add-icon' onClick={handleAddImage}>Add Image<FontAwesomeIcon icon={faPlusCircle} /></button>
-                    </div>
-                </div>
 
-                
+
 
                 <div className="submit-btn">
                     <button type="submit" className="submit-icon" onClick={handleSubmit}>Submit</button>

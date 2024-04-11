@@ -1,7 +1,7 @@
 @import "../../styles/defalutMixins.scss";
 
 @mixin img {
-    object-fit: contain;
+    object-fit:cover;
     @include max-ht-wt;
     border-radius: 10px;
 }
@@ -65,12 +65,15 @@
             margin-top: 7rem;
 
             .p-img {
+                height: 450px;
+                width:500px;
                 img {
                     @include img;
                 }
 
                 @media only screen and (max-width:1480px) {
                     height: 450px;
+                    width:450px;
                 }
             }
         }

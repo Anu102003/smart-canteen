@@ -5,6 +5,7 @@ import Card from '../../../assets/components/Card/Card'
 import { collection, getDocs, orderBy, query } from 'firebase/firestore'
 import { db } from '../../../Config/ConfigFirebase'
 import Menu, { FiltersContext } from '../../../Context/LocaleContext'
+import { getProductsByCategoryApi } from '../../../actions/ApiCalls'
 
 export const ListAllProducts= () => {
 
@@ -14,7 +15,7 @@ export const ListAllProducts= () => {
 
 
     const initialFilters = {
-      price: null,
+      productPrice: null,
     };
 
     const [filters, setFilters] = useState(initialFilters);
@@ -23,7 +24,7 @@ export const ListAllProducts= () => {
         const updatedFilters = { ...prevFilters };
 
         if (filterType === 'Price') {
-          updatedFilters.price = value;
+          updatedFilters.productPrice = value;
         } 
         return updatedFilters;
       });
@@ -32,11 +33,11 @@ export const ListAllProducts= () => {
       return details
         ?.filter(item => {
           return (
-            (!filters.price ||
-              (filters.price === "100" && parseInt(item.price) < 100) ||
-              (filters.price === "500" && parseInt(item.price) >= 100 && parseInt(item.price) <= 500) ||
-              (filters.price === "1000" && parseInt(item.price) >= 500 && parseInt(item.price) <= 1000) ||
-              (filters.price === "1000" && parseInt(item.price) > 1000))
+            (!filters.productPrice ||
+              (filters.productPrice === "100" && parseInt(item.productPrice ) < 100) ||
+              (filters.productPrice === "500" && parseInt(item.productPrice) >= 100 && parseInt(item.productPrice) <= 500) ||
+              (filters.productPrice === "1000" && parseInt(item.productPrice) >= 500 && parseInt(item.productPrice) <= 1000) ||
+              (filters.productPrice === "1000" && parseInt(item.productPrice ) > 1000))
           );
         });
     }
@@ -44,16 +45,8 @@ export const ListAllProducts= () => {
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const messagesCollection = collection(db, `${navMenuSelected.toLowerCase()}`);
-            const q = query(messagesCollection, orderBy('productId', 'asc'));
-            const messagesSnapshot = await getDocs(q);
-            const messagesData = messagesSnapshot.docs.map(doc => (
-              {
-                id: doc.id,
-                ...doc.data()
-              }
-            ));
-            setDetails(messagesData);
+            const result=await getProductsByCategoryApi(navMenuSelected)
+            setDetails(result);
           } catch (error) {
             console.error("Error fetching data:", error);
           }

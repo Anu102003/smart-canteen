@@ -7,9 +7,8 @@ import { useNavigate } from "react-router-dom";
 
 function Card({ product }) {
   const navigate = useNavigate();
-console.log(product)
   const redirect = () => {
-    navigate("/product",{state:{details:product}})
+    navigate("/product",{state:{details:product.productId}})
   }
   return (
     <div className="product-card-wrapper">
@@ -18,7 +17,7 @@ console.log(product)
 
         {/* image */}
         <div className="product-card__img">
-          <img src={product?.thumbnail} />
+          <img src={product?.thumbnailImage} />
         </div>
 
         {/* contents */}
@@ -26,15 +25,12 @@ console.log(product)
           <div className="product">
 
             {/* brand */}
-            <p className="product__brand">{product?.name}</p>
-
-            
-
+            <p className="product__brand">{product?.productName}</p>
 
             {/* price */}
             <div className="price">
 
-              <p className="price__correct"><span className="rupee"></span> {product.price}</p>             
+              <p className="price__correct"><span className="rupee"></span> {product.productPrice}</p>             
             </div>
 
             <div className="description">

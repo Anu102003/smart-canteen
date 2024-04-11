@@ -2,14 +2,16 @@ import React, { useEffect, useState } from 'react'
 import "./sizeChart.scss"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faClose, faCircleCheck } from '@fortawesome/free-solid-svg-icons'
-import { addDoc, collection, setDoc } from 'firebase/firestore'
-import { db } from '../../../../Config/ConfigFirebase'
 import { useNavigate } from 'react-router-dom'
+import { addOrderApi } from '../../../../actions/ApiCalls'
+import { useSelector } from 'react-redux';
+
 export const SizeChart = ({ data, setChart, cart, totalPrice }) => {
     
     const [paymentPopup, setPaymentPopup] = useState(false)
     const [paymentId, setPaymentId] = useState("")
     const navigate = useNavigate()
+    const { email } = useSelector(state => state.user);
     const handlePay = () => {
         var options = {
             key: "rzp_test_7XD7UUKbea9zSO",
@@ -48,14 +50,20 @@ export const SizeChart = ({ data, setChart, cart, totalPrice }) => {
         window.addEventListener("click", handle)
         return () => window.removeEventListener("click", handle)
     }, [])
+    const orderDetails={
+        orderId:4,
+        userEmailId:email.email,
+        orderProductEntityList:data,
+        paymentId:paymentId,
+    }
+    console.log(totalPrice)
+
     useEffect(() => {
         const handleSubmit = async () => {
             if (paymentId.length > 0) {
                 try {
-                    const postsCollectionRef = collection(db, `order`);
-                    const docRef = await addDoc(postsCollectionRef, { paymentId: paymentId, data: data });
-                    console.log("Added successfully")
-                    console.log('Order added successfully:', docRef.id);
+                    const result=await addOrderApi(orderDetails)
+                    console.log(result)
                     localStorage.removeItem('total');
                     localStorage.removeItem('cart');
 

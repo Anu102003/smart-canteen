@@ -1,0 +1,11 @@
+@import "../../../assets/styles/defalutMixins.scss";
+
+.singleOrders-page{
+    .order-contents {
+        margin: 10rem 5rem 2rem 5rem;
+    }
+    .no-orders-contents{
+        margin: 10rem 5rem 2rem 5rem;
+        text-align: center;
+    }
+}

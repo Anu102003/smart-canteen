@@ -1,21 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faUser } from '@fortawesome/free-regular-svg-icons'
-import { faHeart as faHeartSoild, faUser as faUserSoild } from '@fortawesome/free-solid-svg-icons'
+import { faUser } from '@fortawesome/free-regular-svg-icons'
+import { faArrowUpWideShort, faClose, faUser as faUserSoild } from '@fortawesome/free-solid-svg-icons'
 import { faShoppingCart } from '@fortawesome/free-solid-svg-icons';
 import "./_navbarIcons.scss"
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { ProfilePopup } from '../ProfilePopup/ProfilePopup';
 export const NavbarIcons = () => {
     const profile = 'profile'
-    const wishlist = 'wishlist'
+    const orders = 'orders'
     const cart = 'cart'
     const navigate = useNavigate()
-    const { email } = useSelector(state => state.user);
+    const [profilepopup, setProfilePopup] = useState(false)
 
     const [iconHovered, setIconHovered] = useState({
         profile: false,
-        wishlist: false,
+        orders: false,
         cart: false
     });
 
@@ -28,31 +29,20 @@ export const NavbarIcons = () => {
     const handleCart = () => {
         navigate("/cart")
     }
+    const handleOrders = () => {
+        navigate("/order")
+    }
+    useEffect(() => {
+        function handle(e) {
+            if (e.target.className === "profile-popup-parent") {
+                setProfilePopup(false)
+            }
+        }
+        window.addEventListener("click", handle)
+        return () => window.removeEventListener("click", handle)
+    }, [])
     return (
         <div className='icon'>
-            <div className='icon__profile'
-                onMouseEnter={() => handleIconHover(profile, true)}
-                onMouseLeave={() => handleIconHover(profile, false)}
-            >
-                <FontAwesomeIcon icon={iconHovered.profile ? faUserSoild : faUser} color={"purple"} />
-                <span className='icon-txt' style={{ color: iconHovered.profile && 'purple' }}>Profile</span>
-                {
-                    iconHovered.profile &&
-                    <div className='popup'>
-                        <p>{email.email}</p>
-                    </div>
-                }
-            </div>
-
-            {/* <div className='icon__wishlist'
-                onMouseEnter={() => handleIconHover(wishlist, true)}
-                onMouseLeave={() => handleIconHover(wishlist, false)}
-            >
-                <FontAwesomeIcon icon={iconHovered.wishlist ? faHeartSoild : faHeart} color={"purple"} />
-                <span className='icon-txt' style={{ color: iconHovered.wishlist && 'purple' }}>Wishlist</span>
-
-            </div> */}
-
             <div className='icon__cart'
                 onMouseEnter={() => handleIconHover(cart, true)}
                 onMouseLeave={() => handleIconHover(cart, false)}
@@ -61,6 +51,30 @@ export const NavbarIcons = () => {
                 <FontAwesomeIcon icon={faShoppingCart} color={"purple"} />
                 <span className='icon-txt' style={{ color: iconHovered.cart && 'purple' }}>Cart</span>
             </div>
+            <div className='icon__profile'
+                onClick={() => setProfilePopup(true)}
+            >
+                <FontAwesomeIcon icon={iconHovered.profile ? faUserSoild : faUser} color={"purple"} />
+                <span className='icon-txt' style={{ color: iconHovered.profile && 'purple' }}>Profile</span>
+            </div>
+            {
+                profilepopup &&
+                <div className='profile-popup-parent'>
+                    <ProfilePopup setProfilePopup={setProfilePopup} />
+                </div>
+            }
+
+            <div className='icon__orders'
+                onMouseEnter={() => handleIconHover(orders, true)}
+                onMouseLeave={() => handleIconHover(orders, false)}
+                onClick={handleOrders}
+            >
+                <FontAwesomeIcon icon={faArrowUpWideShort} color={"purple"} />
+                <span className='icon-txt' style={{ color: iconHovered.orders && 'purple' }}>Orders</span>
+
+            </div>
+
+
         </div>
     )
 }

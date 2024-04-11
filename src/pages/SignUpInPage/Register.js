@@ -4,66 +4,74 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { useEffect, useState } from 'react'
 import { auth } from '../../Config/ConfigFirebase';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { registerApi } from '../../actions/ApiCalls';
 
 export const Register = ({ setLogin }) => {
     const [registerValue, setregisterValue] = useState({
-        email: "",
-        password: "",
+        userEmailId: "",
+        userPassword: "",
         confirmPassword: "",
+        userPhoneNumber:0,
+        dateOfBirth:"",
+        userName:"",
     })
     const [registerError, setregisterError] = useState({
-        emailError: "",
-        passwordError: "",
+        userEmailIdError: "",
+        userPasswordError: "",
         validateError: "",
-        confirmPasswordError: ""
+        confirmPasswordError: "",
+        userPhoneNumberError:"",
+        dateOfBirthError:"",
+        userNameError:"",
     })
     const [validregister, setValidregister] = useState({
-        emailValid: false,
-        passwordValid: false,
+        userEmailIdValid: false,
+        userPasswordValid: false,
         confirmPasswordValid: false,
+        userPhoneNumberValid:false,
+        userNameValid:false,
+        dateOfBirthValid:false,
     });
     const [registerEyeVisible, setregisterEyeVisible] = useState(false)
     const [registerEyeVisible2, setregisterEyeVisible2] = useState(false)
 
     //validating sign in value
-    const mobileEmailChange = (e) => {
+    const mobileuserEmailIdChange = (e) => {
         const val = e.target.value;
         if (val === "") {
-            setregisterError({ ...registerError, emailError: "Please enter a value" })
-            setValidregister({ ...validregister, emailValid: false })
+            setregisterError({ ...registerError, userEmailIdError: "Please enter a value" })
+            setValidregister({ ...validregister, userEmailIdValid: false })
         }
-        //email valid
+        //userEmailId valid
         else if ((/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(val))) {
-            setregisterValue({ ...registerValue, email: e.target.value })
-            setregisterError({ ...registerError, emailError: "" })
-            setValidregister({ ...validregister, emailValid: true })
+            setregisterValue({ ...registerValue, userEmailId: e.target.value })
+            setregisterError({ ...registerError, userEmailIdError: "" })
+            setValidregister({ ...validregister, userEmailIdValid: true })
         }
         else {
-            setregisterError({ ...registerError, emailError: "Please enter a valid email" })
-            setValidregister({ ...validregister, emailValid: false })
+            setregisterError({ ...registerError, userEmailIdError: "Please enter a valid userEmailId" })
+            setValidregister({ ...validregister, userEmailIdValid: false })
         }
     }
-
-    //validating password 
-    const registerPasswordChange = (e) => {
+    //validating userPassword 
+    const registeruserPasswordChange = (e) => {
 
         const pwd = e.target.value;
         if (pwd === "") {
-            setregisterError({ ...registerError, passwordError: "Please enter a password" })
-            setValidregister({ ...validregister, passwordValid: false })
+            setregisterError({ ...registerError, userPasswordError: "Please enter a Password" })
+            setValidregister({ ...validregister, userPasswordValid: false })
         } else if (/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+[\]{};':"\\|,.<>\/?]).{8,15}$/.test(pwd) && pwd.length >= 8 && pwd.length <= 15) {
-            setregisterValue({ ...registerValue, password: e.target.value })
-            setregisterError({ ...registerError, passwordError: "" })
-            setValidregister({ ...validregister, passwordValid: true })
+            setregisterValue({ ...registerValue, userPassword: e.target.value })
+            setregisterError({ ...registerError, userPasswordError: "" })
+            setValidregister({ ...validregister, userPasswordValid: true })
         } else if (pwd.length > 15) {
-            setregisterError({ ...registerError, passwordError: "Password must be 15 character" })
-            setValidregister({ ...validregister, passwordValid: false })
+            setregisterError({ ...registerError, userPasswordError: "Password must be 15 character" })
+            setValidregister({ ...validregister, userPasswordValid: false })
         } else {
-            setregisterError({ ...registerError, passwordError: "Password must contain at least one uppercase letter, one lowercase letter, one special character  and one digit" })
-            setValidregister({ ...validregister, passwordValid: false })
+            setregisterError({ ...registerError, userPasswordError: "Password must contain at least one uppercase letter, one lowercase letter, one special character  and one digit" })
+            setValidregister({ ...validregister, userPasswordValid: false })
         }
     }
-    console.log(registerValue.confirmPassword === registerValue.password)
 
     //validating confirm password 
     const registerConfirmPasswordChange = (e) => {
@@ -71,7 +79,7 @@ export const Register = ({ setLogin }) => {
         if (pwd === "") {
             setregisterError({ ...registerError, confirmPasswordError: "Please enter a confirm password" })
             setValidregister({ ...validregister, confirmPasswordValid: false })
-        } else if (pwd === registerValue.password) {
+        } else if (pwd === registerValue.userPassword) {
             setregisterValue({ ...registerValue, confirmPassword: e.target.value })
             setregisterError({ ...registerError, confirmPasswordError: "" })
             setValidregister({ ...validregister, confirmPasswordValid: true })
@@ -80,29 +88,89 @@ export const Register = ({ setLogin }) => {
             setValidregister({ ...validregister, confirmPasswordValid: false })
         }
     }
+    //validating dateOfBirth value
+    const dateOfBirthChange = (e) => {
+        const val = e.target.value;
+        if (val === "") {
+            setregisterError({ ...registerError, dateOfBirthError: "Please enter a dateOfBirth "})
+            setregisterValue({ ...registerValue, dateOfBirth: e.target.value })
+            setValidregister({ ...validregister, dateOfBirthValid: false})
+        }
+        else if (val.length>0) {
+            setregisterValue({ ...registerValue, dateOfBirth: e.target.value })
+            setregisterError({ ...registerError, dateOfBirthError: "" })
+            setValidregister({ ...validregister, dateOfBirthValid: true })
+        }
+        // else {
+        //     setregisterError({ ...registerError, dateOfBirthError: "Please enter a valid userEmailId" })
+        // }
+    }
+    //validating userName value
+    const userNameChange = (e) => {
+        const val = e.target.value;
+        if (val === "") {
+            setregisterError({ ...registerError, userNameError: "Please enter a userName "})
+            setregisterValue({ ...registerValue, userName: e.target.value })
+            setValidregister({ ...validregister, userNameValid: false })
+        }
+        else if (val.length>0) {
+            setregisterValue({ ...registerValue, userName: e.target.value })
+            setregisterError({ ...registerError, userNameError: "" })
+            setValidregister({ ...validregister, userNameValid: true })
+        }
+        // else {
+        //     setregisterError({ ...registerError, dateOfBirthError: "Please enter a valid userEmailId" })
+        // }
+    }
+    //validating userName value
+    const userPhoneNumberChange = (e) => {
+        const val = e.target.value;
+        if (val === "") {
+            setregisterError({ ...registerError, userPhoneNumberError: "Please enter a phone number "})
+        }
+        else if (/^[0-9]+$/.test(val)) {
+                if (val.length === 10) {
+                    setregisterValue({ ...registerValue, userPhoneNumber: e.target.value })
+                    setregisterError({ ...registerError, userPhoneNumberError: "" })
+                    setValidregister({ ...validregister, userPhoneNumberValid: true })
+                } else {
+                    setregisterError({ ...registerError, userPhoneNumberError: "Please enter a valid phone number" })
+                    setValidregister({ ...validregister, userPhoneNumberValid: false })
+                }
+        }
+        else {
+            setregisterError({ ...registerError, userPhoneNumberError: "Please enter a valid phone number" })
+        }
+    }
+    
     useEffect(() => {
-        if (registerValue.confirmPassword === registerValue.password) {
+        if (registerValue.confirmPassword === registerValue.userPassword) {
             setregisterError({ ...registerError, confirmPasswordError: "" })
             setValidregister({ ...validregister, confirmPasswordValid: true })
         } else {
             setregisterError({ ...registerError, confirmPasswordError: "Password mismatch" })
             setValidregister({ ...validregister, confirmPasswordValid: false })
         }
-    }, [registerValue.confirmPassword, registerValue.password])
+    }, [registerValue.confirmPassword, registerValue.userPassword])
 
     //sign up validate
     const validateregister = async (e) => {
         e.preventDefault();
-        if (validregister.emailValid && validregister.passwordValid && validregister.confirmPasswordValid) {
-            setregisterError({ ...registerError, validateError: "" })
+        if (validregister.userEmailIdValid && validregister.userPasswordValid && validregister.confirmPasswordValid && 
+            validregister.userNameValid && validregister.userPhoneNumberValid && validregister.dateOfBirthValid) {
+                setregisterError({ ...registerError, validateError: "" })
             try {
-                const result = await createUserWithEmailAndPassword(auth, registerValue.email, registerValue.password)
-                console.log(result);
-                setLogin(true)
+                const result = await registerApi(registerValue)
+                // console.log(result);
+                if(result.data.includes("successfully")){
+                    setLogin(true)
+                }else{
+                    setregisterError({ ...registerError, validateError: result.data })
+                }
             }
             catch (err) {
-                console.log("Firebase Error signing in:", err)
-                setregisterError({ ...registerError, validateError: "Email already register" })
+                console.log("Error in register:", err)
+                setregisterError({ ...registerError, validateError: "Error in register" })
             };
 
         } else {
@@ -110,12 +178,12 @@ export const Register = ({ setLogin }) => {
         }
     }
     useEffect(() => {
-        if (validregister.emailValid && validregister.passwordValid && validregister.confirmPasswordValid) {
+        if (validregister.userEmailIdValid && validregister.userPasswordValid && validregister.confirmPasswordValid) {
             setregisterError({ ...registerError, validateError: "" })
         } else {
             setregisterError({ ...registerError, validateError: "Please enter correct data" })
         }
-    }, [validregister.emailValid, validregister.passwordValid, validregister.confirmPasswordValid])
+    }, [validregister.userEmailIdValid, validregister.userPasswordValid, validregister.confirmPasswordValid])
     return (
         <>
             <div className='headings'>
@@ -128,22 +196,22 @@ export const Register = ({ setLogin }) => {
                 <div className='input-field-wrapper'>
                     <FontAwesomeIcon icon={faEnvelope} className='icon' />
                     <input className='login-text'
-                        defaultValue={setregisterValue.email === "" ? "" : setregisterValue.email}
-                        onChange={mobileEmailChange}
+                        defaultValue={setregisterValue.userEmailId === "" ? "" : setregisterValue.userEmailId}
+                        onChange={mobileuserEmailIdChange}
                         type='text'
                         placeholder='Email address'
                         autocomplete="off" />
                 </div>
             </div>
-            <p className='login-error'>{registerError.emailError}</p>
+            <p className='login-error'>{registerError.userEmailIdError}</p>
 
             {/* Input field of register value */}
             <div className='fields'>
                 <div className='input-field-wrapper'>
                     <FontAwesomeIcon icon={faKey} className='icon' />
                     <input className='login-text'
-                        defaultValue={setregisterValue.password === "" ? "" : setregisterValue.password}
-                        onChange={registerPasswordChange}
+                        defaultValue={setregisterValue.userPassword === "" ? "" : setregisterValue.userPassword}
+                        onChange={registeruserPasswordChange}
                         type={registerEyeVisible ? "text" : "password"}
                         placeholder='Password'
                         autocomplete="off" />
@@ -156,7 +224,8 @@ export const Register = ({ setLogin }) => {
                     </div>
                 </div>
             </div>
-            <p className='login-error'>{registerError.passwordError}</p>
+            <p className='login-error'>{registerError.userPasswordError}</p>
+
 
             <div className='fields'>
                 <div className='input-field-wrapper'>
@@ -177,6 +246,45 @@ export const Register = ({ setLogin }) => {
                 </div>
             </div>
             <p className='login-error'>{registerError.confirmPasswordError}</p>
+
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                    <FontAwesomeIcon icon={faEnvelope} className='icon' />
+                    <input className='login-text'
+                        defaultValue={setregisterValue.dateOfBirth === "" ? "" : setregisterValue.dateOfBirth}
+                        onChange={dateOfBirthChange}
+                        type='date'
+                        placeholder='D-O-B'
+                        autocomplete="off" />
+                </div>
+            </div>
+            <p className='login-error'>{registerError.dateOfBirthError}</p>
+
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                    <FontAwesomeIcon icon={faEnvelope} className='icon' />
+                    <input className='login-text'
+                        defaultValue={setregisterValue.userPhoneNumber === "" ? "" : setregisterValue.userPhoneNumber}
+                        onChange={userPhoneNumberChange}
+                        type='tel'
+                        placeholder='Phone number'
+                        autocomplete="off" />
+                </div>
+            </div>
+            <p className='login-error'>{registerError.userPhoneNumberError}</p>
+
+            <div className='fields'>
+                <div className='input-field-wrapper'>
+                    <FontAwesomeIcon icon={faEnvelope} className='icon' />
+                    <input className='login-text'
+                        defaultValue={setregisterValue.userName === "" ? "" : setregisterValue.userName}
+                        onChange={userNameChange}
+                        type='text'
+                        placeholder='Username'
+                        autocomplete="off" />
+                </div>
+            </div>
+            <p className='login-error'>{registerError.userNameError}</p>
 
             {/* Sign Up Button */}
             <button className='login-button' onClick={validateregister}>

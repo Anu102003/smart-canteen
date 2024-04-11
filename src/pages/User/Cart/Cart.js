@@ -14,7 +14,6 @@ export const Cart = () => {
     const [deleteClick, setDeleteClick] = useState(false);
     const [totalPrice, setTotalPrice] = useState(0)
     const [buyEnabled, setBuyEnabled] = useState(false)
-
     useEffect(() => {
         const cartDataFromStorage = JSON.parse(window.localStorage.getItem('cart'));
         setCartData(cartDataFromStorage || []);
@@ -23,23 +22,22 @@ export const Cart = () => {
     useEffect(() => {
         const totalFromStorage = JSON.parse(window.localStorage.getItem('total'));
         setTotal(totalFromStorage || []);
-    }, [incrementClick, decrementClick, deleteClick]);
-    
+    }, [incrementClick, decrementClick, deleteClick,cartData]);
+
     useEffect(() => {
         const sum = total.reduce((accumulator, currentValue) => accumulator + currentValue.value, 0);
         setTotalPrice(sum);
     }, [incrementClick, decrementClick, total, deleteClick]);
-
     useEffect(() => {
         const updatedCombinedData = cartData.map(cartItem => {
-            const totalItem = total.find(totalItem => totalItem?.id === cartItem?.id);
+            const totalItem = total.find(totalItem => totalItem?.id === cartItem?.productId);
             return {
                 ...cartItem,
                 ...totalItem
             };
         });
         setCombinedData(updatedCombinedData);
-    }, [cartData]);
+    }, [cartData,total]);
 
     useEffect(() => {
         function handle(e) {
@@ -50,7 +48,6 @@ export const Cart = () => {
         window.addEventListener("click", handle)
         return () => window.removeEventListener("click", handle)
     }, [])
-    // console.log(combinedData)
     // useEffect(() => {
     //     const total = JSON.parse(window.localStorage.getItem('total'));
     //     const sum = total?.reduce((accumulator, currentValue) => accumulator + currentValue.value, 0);

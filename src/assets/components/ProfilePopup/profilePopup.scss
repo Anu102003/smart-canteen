@@ -1,0 +1,5 @@
+@import "../../styles/defalutMixins.scss";
+
+.profile-popup{
+    @include popup(50%,40%);
+}

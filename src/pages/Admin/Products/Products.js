@@ -8,6 +8,7 @@ import { ListProducts } from '../../../assets/components/ListProducts/ListProduc
 import { useTranslation } from 'react-i18next'
 import { collection, getDocs, orderBy, query } from 'firebase/firestore';
 import { db } from '../../../Config/ConfigFirebase'
+import { getAllProductsApi, getProductsByCategoryApi } from '../../../actions/ApiCalls'
 
 export const Products = () => {
   const [categoryOpen, setCategoryOpen] = useState(false);
@@ -17,6 +18,7 @@ export const Products = () => {
   const [editEnable, setEditEnable] = useState(false);
   const [editId, setEditId] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [deleteEnable,setDeleteEnable]=useState(false)
 
   const searchQuery = (e) => {
     setSearchTerm(e.target.value);
@@ -42,27 +44,19 @@ export const Products = () => {
     if (categorySelect.length > 0) {
       const fetchData = async () => {
         try {
-          const messagesCollection = collection(db, `${categorySelect.toLowerCase()}`);
-          const q = query(messagesCollection, orderBy('productId', 'asc'));
-          const messagesSnapshot = await getDocs(q);
-          const messagesData = messagesSnapshot.docs.map(doc => (
-            {
-              id: doc.id,
-              ...doc.data()
-            }
-          ));
-          setDetails(messagesData);
+          const result=await getProductsByCategoryApi(categorySelect)
+          // const listProduct = result.filter(product => product.foodType === categorySelect);
+          setDetails(result);
         } catch (error) {
           console.error("Error fetching data:", error);
         }
       };
       fetchData();
     }
-  }, [categorySelect,addEnable,editEnable]);
-
+  }, [categorySelect,addEnable,editEnable,deleteEnable]);
   const filteredProducts = details?.filter(product => {
-    const searchableName = product.name?.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
-    const searchablePrice = product.price?.toString().toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    const searchableName = product.productName?.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
+    const searchablePrice = product.productPrice?.toString().toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
     const searchTermFormatted = searchTerm.toLowerCase().replace(/[^a-zA-Z0-9\s]/g, '');
     return searchableName?.includes(searchTermFormatted) || searchablePrice?.includes(searchTermFormatted);
   });
@@ -78,7 +72,7 @@ export const Products = () => {
           </p>
         </div>
       default:
-        return <ListProducts category={categorySelect} details={filteredProducts} setEditId={setEditId} setEditEnable={setEditEnable} setProductData={setProductData} />
+        return <ListProducts category={categorySelect} details={filteredProducts} setEditId={setEditId} setEditEnable={setEditEnable} setProductData={setProductData} setDeleteEnable={setDeleteEnable} deleteEnable={deleteEnable}/>
     }
   }
 

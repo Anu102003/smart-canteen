@@ -2,7 +2,8 @@ import { collection, deleteDoc, doc, getDocs, orderBy, query } from 'firebase/fi
 import React, { useEffect, useState } from 'react'
 import { db } from '../../../Config/ConfigFirebase';
 import "./_listProducts.scss"
-export const ListProducts = ({ category,details, setEditId, setEditEnable, setProductData }) => {
+import { deleteProductsApi } from '../../../actions/ApiCalls';
+export const ListProducts = ({ category, details, setEditId, setEditEnable, setProductData,setDeleteEnable,deleteEnable }) => {
     const handelEdit = (index, id) => {
         setEditEnable(true)
         setProductData(details[index])
@@ -12,8 +13,9 @@ export const ListProducts = ({ category,details, setEditId, setEditEnable, setPr
     const handelDelete = async (index, id) => {
         const isConfirmed = window.confirm("Are you sure you want to delete this item?");
         if (isConfirmed) {
-            const postsEditCollectionRef = doc(db, `${category.toLowerCase()}`, id);
-            await deleteDoc(postsEditCollectionRef);
+            const result = await deleteProductsApi(id)
+            setDeleteEnable(!deleteEnable)
+            window.alert(result.data+". Click ok to continue")
         }
     }
     return (
@@ -28,15 +30,15 @@ export const ListProducts = ({ category,details, setEditId, setEditEnable, setPr
             {
                 details?.map((product, index) => (
                     <div className='list-container-item' key={index}>
-                        <p className='list-item'>{product.productId}</p>
-                        <img src={product.thumbnail} className='display4' />
-                        <p className='list-item display3'>{product.name}</p>
-                        <p className='list-item display5'>{product.price}</p>
+                        <p className='list-item'>{index + 1}</p>
+                        <img src={product.thumbnailImage} className='display4' />
+                        <p className='list-item display3'>{product.productName}</p>
+                        <p className='list-item display5'>{product.productPrice}</p>
 
-                       
+
                         <div className='list-item modify'>
-                            <button onClick={() => { handelEdit(index, product.id) }} className='edit-btn'>Edit</button>
-                            <button onClick={() => { handelDelete(index, product.id) }} className='delete-btn'>Delete</button>
+                            <button onClick={() => { handelEdit(index, product.productId) }} className='edit-btn'>Edit</button>
+                            <button onClick={() => { handelDelete(index, product.productId) }} className='delete-btn'>Delete</button>
                         </div>
                     </div>
                 )
